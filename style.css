@@ -1,0 +1,74 @@
+body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+flex-direction: column;
+  margin: 0;
+  font-family: sans-serif;
+  
+  background: linear-gradient(296deg, #0dd6a2, #189abf, #e654d0);
+    background-size: 600% 600%;
+
+    animation: AnimationName 29s ease infinite;
+}
+
+@keyframes AnimationName {
+    0%{background-position:0% 24%}
+    50%{background-position:100% 77%}
+    100%{background-position:0% 24%}
+
+}
+#board {
+  display: grid;
+  grid-template-columns: repeat(3, 100px);
+  gap: 8px;                   
+  padding: 20px;
+  background: transparent;
+ background-color: #232323
+  
+}
+.main-div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #232323;
+    border-radius: 10px;
+    position: relative;
+   
+}
+
+
+
+
+
+
+.cell {
+    background-color: #1e1e1e;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+  color: #0ff;
+  cursor: pointer;
+  aspect-ratio: 1 / 1;          /* makes cell square */
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.6);
+  transition: transform .12s;
+}
+
+.o {
+    color: red;
+}
+#restart{
+padding: 5px 20px;
+border-radius: 5px;
+color:white;
+background-color: red;
+border: none;
+margin-bottom: 20px;
+}
+
+h2 , h1 {
+  color: white;
+}
