@@ -7,10 +7,10 @@ flex-direction: column;
   margin: 0;
   font-family: sans-serif;
   
-  background: linear-gradient(296deg, #0dd6a2, #189abf, #e654d0);
-    background-size: 600% 600%;
+  background: linear-gradient(296deg, #00a6ff, #ffffff, #3100ff);
+    background-size: 300% 300%;
 
-    animation: AnimationName 29s ease infinite;
+    animation: AnimationName 10s ease infinite;
 }
 
 @keyframes AnimationName {
@@ -72,3 +72,14 @@ margin-bottom: 20px;
 h2 , h1 {
   color: white;
 }
+.win{
+    background-color: #44f144
+}
+#gameai{
+  padding: 5px 10px;
+  border-radius: 10px;
+   background-color:#00a6ff;
+   border: none;
+   color: #fff;
+}
+
