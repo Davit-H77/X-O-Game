@@ -1,4 +1,4 @@
-//--- DOM ՏԱՐՐԵՐԻ ՍՏԱՑՈՒՄ ---
+
 const boardEl = document.getElementById("board");
 const statusEl = document.getElementById("status")
 const restartBtn = document.getElementById("restart");
@@ -24,9 +24,14 @@ const winCombos = [
 function startGame() {
     board = Array(9).fill(''); // 9 դատարկ վանդակ
     currentPlayer = 'X';
+    switchAiBtn.disabled = false
     isGameActive = true;
-     statusEl.innerHTML = ""
+    statusEl.innerHTML = ""
     boardEl.innerHTML = ''; // Մաքրում ենք հին տախտակը
+    switchAiBtn.addEventListener('click', () => {
+        aiGamer = !aiGamer
+        switchAiBtn.textContent = aiGamer ? "Game with AI" : "Game with friend"
+    })
 
     // Ստեղծում ենք 9 նոր վանդակ
     for (let i = 0; i < 9; i++) {
@@ -38,35 +43,25 @@ function startGame() {
     }
 }
 
-function switchGame() {
-    switchAiBtn.addEventListener('click', () => {
-       aiGamer = !aiGamer
-
-    })
-    
-}
-
-
-
 // Կանչվում է վանդակի վրա սեղմելիս
 function handleCellClick(event) {
     const index = event.target.dataset.index;
+    switchAiBtn.disabled = true
+
     // Եթե խաղն ավարտվել է կամ վանդակը զբաղված է, ոչինչ չանել
     if (!isGameActive || board[index] !== '') {
         return;
     }
+
     makeMovie(index)
-    // 4. Փոխել խաղացողին
+    if (isGameActive) {
+        switchPlayer();
 
-
-    switchPlayer();
-    if(aiGamer){
-        setTimeout(aiMove, 500);
+        if (aiGamer) {
+            setTimeout(aiMove, 500);
+        }
     }
-    switchGame()
 }
-
-
 
 // Փոխում է հերթը մյուս խաղացողին
 function switchPlayer() {
@@ -79,12 +74,12 @@ function checkWin(currentBoard, player) {
     for (const combo of winCombos) {
         const [a, b, c] = combo;
         if (currentBoard[a] === player && currentBoard[b] === player && currentBoard[c] === player) {
-            confetti()
             return combo; // Վերադարձնել հաղթող կոմբինացիան
         }
     }
     return null; // Հաղթող չկա
 }
+
 
 function endGame(winCombo, isDraw) {
     isGameActive = false;
@@ -99,9 +94,6 @@ function endGame(winCombo, isDraw) {
     }
 }
 
-// լավագույն քայլը արդյոք կարող է հաղթել հաջորդ քայլով
-// խանգառի հակառակորդին, արդյոք հակառակորդը կարող է հաղթել, և արգելափակում է
-// եթե վտանգավոր քայլեր չկան հետևել ռազմավարությանը
 
 function makeMovie(index) {
     // 1. Կատարել քայլ
@@ -112,20 +104,21 @@ function makeMovie(index) {
     // 2. Ստուգել հաղթանակը
     const winningCombo = checkWin(board, currentPlayer);
     if (winningCombo) {
+        confetti()
         endGame(winningCombo, false)
         return; // Դադարեցնել ֆունկցիան, քանի որ խաղն ավարտված է
     }
 
     // 3. Ստուգել ոչ-ոքին
     if (!board.includes('')) {
-        endGame(winningCombo, true)
+        endGame(winningCombo, true) 
         return
     }
 }
 
 function aiMove() {
+    if(!isGameActive) return; // Ավելորդ ստուգում, որպեսզի AI-ն քայլ չանի, եթե խաղացողը հաղթել է
     const bestMovieIndex = findBestMovie()
-    console.log(findBestMovie, 'find best move')
     if (bestMovieIndex !== -1) {
         makeMovie(bestMovieIndex)
         if (isGameActive) {
@@ -148,8 +141,6 @@ function findBestMovie() {
     }
 
     // ստուգւոմ ենք արդյոք հակառակորդը կարող է հաղթել եթե այո արգելափակում ենք
-
-
     for (let i = 0; i < 9; i++) {
         if (board[i] === '') {
             const boardCopy = [...board]
@@ -160,7 +151,7 @@ function findBestMovie() {
         }
     }
 
-    // եթե վտանգավոր քայլեչ չկան կատարել հերթական դեպի հաղթանակ տանող քայլը
+    // եթե վտանգավոր քայլեր չկան կատարել հերթական դեպի հաղթանակ տանող քայլը
     const strategicMoves = [4, 0, 2, 6, 8, 1, 3, 5, 7]
     for (const move of strategicMoves) {
         if (board[move] === '') {
@@ -171,9 +162,7 @@ function findBestMovie() {
     return -1
 }
 
-
-
 // --- ԽԱՂԻ ՄԵԿՆԱՐԿ ---
-restartBtn.addEventListener('click', startGame,
-    statusEl.innerHTML = "");
-startGame() // Սկսում ենք խաղը, երբ էջը բացվու//
+restartBtn.addEventListener('click', startGame);
+
+startGame() // Սկսում ենք խաղը, երբ էջը բացվում է

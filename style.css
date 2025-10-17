@@ -75,11 +75,14 @@ h2 , h1 {
 .win{
     background-color: #44f144
 }
-#gameai{
+.gameai{
   padding: 5px 10px;
   border-radius: 10px;
    background-color:#00a6ff;
    border: none;
    color: #fff;
+   cursor: pointer;
 }
-
+button:disabled{
+  background-color: gray;
+}
